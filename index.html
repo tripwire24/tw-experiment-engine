@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Growth Ops PWA</title>
+    <meta name="theme-color" content="#05070d" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              bg: {
+                0: '#05070d',
+                1: '#070b14',
+              },
+              neon: {
+                cyan: '#00f0ff',
+                blue: '#2a7bff',
+                purple: '#b14cff',
+                green: '#4dffb5',
+                red: '#ff3366',
+                orange: '#ffaa00'
+              },
+              panel: 'rgba(10, 16, 28, 0.72)',
+            },
+            fontFamily: {
+              mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", 'monospace'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      :root {
+        --bg-0: #05070d;
+        --bg-1: #070b14;
+        --panel: rgba(10, 16, 28, 0.72);
+        --panel-2: rgba(12, 20, 36, 0.62);
+
+        --text: rgba(235, 245, 255, 0.92);
+        --muted: rgba(235, 245, 255, 0.62);
+
+        --neon-cyan: #00f0ff;
+        --neon-blue: #2a7bff;
+        --neon-purple: #b14cff;
+        --neon-green: #4dffb5;
+
+        --stroke: rgba(0, 240, 255, 0.15);
+        --stroke-strong: rgba(0, 240, 255, 0.5);
+
+        --glow-cyan: 0 0 18px rgba(0, 240, 255, 0.15);
+        --glow-blue: 0 0 18px rgba(42, 123, 255, 0.25);
+
+        --radius: 12px;
+        --ease-tron: cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      body {
+        background-color: var(--bg-0);
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        overscroll-behavior-y: none;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-1);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(0, 240, 255, 0.2);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--neon-cyan);
+        box-shadow: 0 0 10px var(--neon-cyan);
+      }
+
+      /* 1. Background System */
+      .tron-bg {
+        background:
+          radial-gradient(1200px 600px at 50% 0%, rgba(0, 240, 255, 0.05), transparent 60%),
+          radial-gradient(900px 500px at 80% 80%, rgba(177, 76, 255, 0.04), transparent 55%),
+          linear-gradient(180deg, var(--bg-0), var(--bg-1));
+        min-height: 100vh;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tron-bg::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+        opacity: 0.4;
+        mask-image: radial-gradient(circle at 50% 50%, rgba(0,0,0,1), rgba(0,0,0,0) 80%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .tron-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          180deg,
+          rgba(0, 240, 255, 0.01),
+          rgba(0, 240, 255, 0.01) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+        opacity: 0.3;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* 2. Panels */
+      .tron-panel {
+        background: linear-gradient(180deg, var(--panel), var(--panel-2));
+        border: 1px solid var(--stroke);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        border-radius: var(--radius);
+        backdrop-filter: blur(8px);
+        transition: border-color 200ms var(--ease-tron), box-shadow 200ms var(--ease-tron);
+      }
+
+      .tron-panel-hover:hover {
+        border-color: var(--stroke-strong);
+        box-shadow: var(--glow-cyan);
+      }
+
+      /* 3. Buttons */
+      .tron-btn {
+        background: rgba(0, 240, 255, 0.05);
+        border: 1px solid rgba(0, 240, 255, 0.3);
+        color: var(--neon-cyan);
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 240, 255, 0.05);
+        transition: all 180ms var(--ease-tron);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .tron-btn:hover:not(:disabled) {
+        background: rgba(0, 240, 255, 0.15);
+        border-color: var(--neon-cyan);
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        color: #fff;
+        text-shadow: 0 0 5px var(--neon-cyan);
+        transform: translateY(-1px);
+      }
+      
+      .tron-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        border-color: rgba(255,255,255,0.1);
+        color: rgba(255,255,255,0.3);
+      }
+
+      .tron-btn-primary {
+         background: rgba(0, 240, 255, 0.15);
+         border-color: var(--neon-cyan);
+         color: #fff;
+         text-shadow: 0 0 5px rgba(0, 240, 255, 0.5);
+      }
+      
+      .tron-btn-danger {
+        border-color: rgba(255, 51, 102, 0.5);
+        color: var(--neon-red);
+        background: rgba(255, 51, 102, 0.05);
+      }
+      .tron-btn-danger:hover {
+        border-color: #ff3366;
+        box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+        text-shadow: 0 0 5px #ff3366;
+      }
+
+      /* 4. Motion & Sheen */
+      @keyframes tron-scan {
+        0% { transform: translateX(-150%) skewX(-25deg); opacity: 0; }
+        10% { opacity: 1; }
+        100% { transform: translateX(200%) skewX(-25deg); opacity: 0; }
+      }
+
+      .tron-sheen {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .tron-sheen::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0,240,255,0.1), transparent);
+        transform: translateX(-150%) skewX(-25deg);
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      .tron-sheen:hover::after {
+        animation: tron-scan 1.2s ease-in-out;
+      }
+
+      /* Text Utilities */
+      .text-neon-cyan { color: var(--neon-cyan); }
+      .text-neon-blue { color: var(--neon-blue); }
+      .text-neon-purple { color: var(--neon-purple); }
+      
+      .drop-shadow-neon {
+        filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.95.3"
+  }
+}
+</script>
+</head>
+  <body class="tron-bg antialiased h-screen overflow-hidden">
+    <div id="root" class="h-full relative z-10"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
